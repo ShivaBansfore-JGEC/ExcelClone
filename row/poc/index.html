@@ -5,13 +5,124 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+<style>
+    body{
+        margin: 0px;
+    }
+    *{
+        box-sizing: border-box;
+    }
+
+    .top-left-block{
+        width:25px;
+        height:30px;
+        position: absolute;
+        background-color: gray;
+    }
+
+    .top-row{
+        height:30px;
+        background-color:lightgreen;
+        position: absolute;
+        display: flex;
+        left: 25px;
+    }
+
+    .left-col{
+        width:25px;
+        background-color: lightgreen;
+        position: absolute;
+        top:30px;
+    }
+
+    .left-col-box{
+        height:30px;
+        background-color: lightgreen;
+        display: flex;
+        border: 1px solid red;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .col{
+        min-width:80px;
+        min-height:30px;
+        border: 1px solid rgba(100, 94, 94, 0.616);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .row{
+        display: flex;
+    }
+    .grid{
+        position: absolute;
+        top: 30px;
+        left:25px;
+    }
+
+    .grid_container{
+        position: relative;
+    }
+
+
+
+
+</style>
 </head>
 
 <body>
+    <div class="grid_container">
 
-<div class="left-corner"></div>
-<div class="letf-col"></div>
-<div class="top-row"></div>
+        <div class="top-left-block"></div>
+        <div class="top-row">
+            <div class="col"></div> 
+        </div>
+        <div class="left-col">left col</div>
+        <div class="grid"></div>
+    </div>
     
 </body>
+<script>
+
+
+    //creating left coloumn 
+    let leftCol=document.querySelector(".left-col");
+    let str="";
+    for(let i=0;i<100;i++){
+        str+=`<div class='left-col-box'> ${i+1}</div>`;
+    }
+
+    leftCol.innerHTML=str;
+
+
+    //now creating top row
+
+    let topRow=document.querySelector(".top-row");
+    str="";
+    for(let i=0;i<26;i++){
+        str+=`<div class='col'> ${String.fromCharCode(65+i)}</div>`;
+    }
+
+    topRow.innerHTML=str;
+
+
+    //now constructin grid area of sheet
+
+    let Grid=document.querySelector(".grid");
+    //2d matrix 
+    str="";
+    for(let i=0;i<100;i++){
+        str+=`<div class="row" >`;
+        for(let j=0;j<26;j++){
+            str+=`<div class='col'>${i+1} ${String.fromCharCode(65+j)}</div>`;
+        }
+        str+=`</div>`;
+    }
+
+    Grid.innerHTML=str;
+
+</script>
+
 </html>

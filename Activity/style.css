@@ -7,23 +7,80 @@ body{
     box-sizing: border-box;
 }
 
+/* ************************* Menu css ********************************  */
+
 .menu-container{
     height:80px;
-    background-color:lightgray;
+    background-color:#cfe1f8;
+    display: flex;
+    align-items: center;
 }
+
+.menu-container>*{
+    height:80%;
+    width:20%;
+    border-right: 2px solid gray;
+}
+
+
+.formatting-container{
+    display: flex;
+    justify-content: space-around;
+    margin-left: 30px;
+}
+
+.subgroup{
+    width:45%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.subgroup>*{
+    width:100%;
+}
+
+.BUI_container{
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.BUI_container>*{
+    width:30%;
+}
+
+.color-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.color-container>*{
+    width: 45%;
+}
+
+
+.alignment-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alignment-container>*{
+    width: 20%;
+}
+
+
+/* *************************************************************/
 
 .formula-container{
     height:30px;
-    background-color: aliceblue;
-}
-
-.grid{
-    height: calc(100vh - ( 80px + 40px + 30px) );
+    background-color:#fefefe;
 }
 
 .sheets{
-    height: 30px;
-    background-color: lightgrey;
+    height: 40px;
+    background-color:#cfe1f8;
     display:flex;
 }
 
@@ -33,22 +90,40 @@ body{
 
 .add-sheet_container{
     height: 100%;
-    width:30px;
-    border: 1px solid grey;
+    min-width:30px;
+    display: flex;
     justify-content: center;
     align-items: center;
+    border: 1px solid grey;
 }
 .sheets-list{
     display: flex;
+    height: 100%;
+    overflow-x: auto;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.sheets-list::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .sheets-list{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+
 .icon{
-    font-size: 1.2rem;
-    color: lightgreen;
+    font-size: 1.4rem;
+    color:#7898c2;
+    font-weight:1000;
+    
+    
 }
 
 .sheet{
-    width: 60px;
+    min-width: 60px;
     height:100%;
     display: flex;
     justify-content: center;
@@ -58,3 +133,66 @@ body{
 .active-sheet{
     background-color:white;
 }
+
+
+
+
+/************************* grid container css *********************************/
+
+.top-left-block{
+    width:25px;
+    height:30px;
+    position: absolute;
+    background-color:#a9c4e9;
+}
+
+.top-row{
+    height:30px;
+    background-color:#cfe1f8;
+    position: absolute;
+    display: flex;
+    left: 25px;
+}
+
+.left-col{
+    width:25px;
+    background-color: #cfe1f8;
+    position: absolute;
+    top:30px;
+}
+
+.left-col-box{
+    height:30px;
+    background-color: #cfe1f8;
+    display: flex;
+    border: 0.5px solid#bdc3c7;
+    justify-content: center;
+    align-items: center;
+}
+
+.col{
+    min-width:80px;
+    min-height:30px;
+    border: 0.5px solid#bdc3c7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.row{
+    display: flex;
+}
+.grid{
+    position: absolute;
+    top: 30px;
+    left:25px;
+}
+
+
+.grid_container{
+    position: relative;
+    height: calc(100vh - ( 80px + 40px + 30px) );
+    overflow: auto;
+}
+
+
