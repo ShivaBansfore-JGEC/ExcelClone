@@ -8,9 +8,9 @@
 
     leftCol.innerHTML=str;
 
+    //*********************************
 
     //now creating top row
-
     let topRow=document.querySelector(".top-row");
     str="";
     for(let i=0;i<26;i++){
@@ -18,6 +18,8 @@
     }
 
     topRow.innerHTML=str;
+
+    // ******************************
 
 
     //now constructin grid area of sheet
@@ -28,9 +30,35 @@
     for(let i=0;i<100;i++){
         str+=`<div class="row" >`;
         for(let j=0;j<26;j++){
-            str+=`<div class='col'>${i+1} ${String.fromCharCode(65+j)}</div>`;
+            str+=`<div class='col' rid=${i} cid=${j} contenteditable="true" ></div>`;
         }
         str+=`</div>`;
     }
 
     Grid.innerHTML=str;
+
+    //***********************************
+
+
+    //creating 2d array
+
+    let sheetDB=[];
+
+    for(let i=0;i<100;i++){
+        let row=[]
+        for(let j=0;j<26;j++){
+            let cell={
+                bold:false,
+                italic:false,
+                underline:"none",
+                fontFamily:"Arial",
+                fontSize:"10",
+                halign:"left"
+            }
+
+            row.push(cell);
+        }
+        sheetDB.push(row);
+    }
+
+    //console.log(sheetDB);
