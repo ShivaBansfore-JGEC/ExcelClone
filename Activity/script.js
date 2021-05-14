@@ -366,7 +366,7 @@ function initUI(){
         AllCells[i].style.textAlign="left";
         AllCells[i].style.fontStyle="normal";
         AllCells[i].style.textDecoration="none";
-        AllCells[i].style.fontSize="10px";
+        AllCells[i].style.fontSize="16px";
         AllCells[i].innerText="";
     }
 }
@@ -384,9 +384,7 @@ for(let i=0;i<AllCells.length;i++){
 
 function setUI(sheetDB){
     for(let i=0;i<sheetDB.length;i++){
-        console.log("sheet db:",sheetDB[i].length);
         for(let j=0;j<sheetDB[i].length;j++){
-
             let cell=document.querySelector(`.col[rid="${i}"][cid="${j}"]`);
             let { bold,italic,underline,fontFamily,fontSize,halign,value } = sheetDB[i][j];
             cell.style.fontWeight= bold == true ? "bold" : "normal";
@@ -406,10 +404,13 @@ formula_input.addEventListener("keydown",function(e){
         let formula=formula_input.value;
 
         //get current cell
-        let value=evaluate(formula);
+        let value=evaluateFormula(formula);
+        
+        let address=addressBox.value;
+        let { rid, cid }=getRidCidFromAddress(address);
 
         //set the UI
-        setUI(value);
+        setUIByFormula(value,rid,cid);
 
         //set value and formula in database
         setContentInDb(value,formula);
@@ -417,10 +418,27 @@ formula_input.addEventListener("keydown",function(e){
 })
 
 
-function evaluate(formula){
+function setUIByFormula(value,rid,cid){
+    document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`).innerText=value;
+}
+
+function evaluateFormula(formula){
 
     // "( A1 + A2 )"
     let formulaToken=formula.split(" ");
+
+    for(let i=0;i<formulaToken.length;i++){
+        let firstCharOfToken=formulaToken[i].charCodeAt(0);
+        if(firstCharOfToken>=65 && firstCharOfToken<=90){
+            console.log(formulaToken[i]);
+            let {rid,cid}=getRidCidFromAddress(formulaToken[i]);
+            let cellObject=sheetDB[rid][cid];
+            let {value}=cellObject;
+            formula=formula.replace(formulaToken[i],value);
+        }
+    }
+    let ans=eval(formula);
+    return ans;
 }
 
 
