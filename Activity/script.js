@@ -14,6 +14,8 @@ first_sheets.addEventListener("click",handleActivesheet);
 
 let formula_input=document.querySelector(".formula-box");
 
+let sheetDB=workSheetDB[0];
+
 //font btn
 
 let fontBtn=document.querySelector(".font-size");
@@ -44,6 +46,21 @@ addbtnContainer.addEventListener("click",function(){
     NewSheet.innerText=`Sheet ${idx+1}`;
 
     sheetList.appendChild(NewSheet);
+
+    sheetsArr.forEach(function(sheet){
+        sheet.classList.remove("active-sheet");
+
+    })
+
+    sheetsArr=document.querySelectorAll(".sheet");
+    sheetsArr[sheetsArr.length-1].classList.add("active-sheet");
+    //2d array
+    initCurrentSheetDb();
+
+    sheetDB=workSheetDB[idx];
+    //initialize new page with empty cells
+    initUI();
+
     NewSheet.addEventListener("click",handleActivesheet);
 })
 
@@ -59,6 +76,13 @@ function handleActivesheet(e){
     if(!MySheet.classList[1]){
         MySheet.classList.add("active-sheet");
     }
+
+    let sheetIdx=MySheet.getAttribute("sheetIdx");
+    console.log("sheet Index",sheetIdx);
+    sheetDB=workSheetDB[sheetIdx-1];
+
+    //get data from that sheet and set UI
+    setUI(sheetDB);
 }
 
 // *********************************
@@ -94,7 +118,56 @@ for(let i=0;i<AllCells.length;i++){
         italicElem.classList.remove("active-btn");
       }
 
-      
+      //setting underline property
+
+      if(cellObject.underline==true){
+        underlineElem.classList.add("active-btn");
+      }else{
+          underlineElem.classList.remove("active-btn");
+      }
+
+
+      // saving alignment property
+      if(cellObject.halign=="default"){
+            if(leftBtn.classList.contains("active-btn")==true)
+                leftBtn.classList.remove("active-btn");
+
+            if(centerBtn.classList.contains("active-btn")==true)
+                centerBtn.classList.remove("active-btn");
+            
+            if(rightBtn.classList.contains("active-btn")==true)
+                rightBtn.classList.remove("active-btn");
+      }else{
+
+        if(cellObject.halign=="left"){
+            leftBtn.classList.add("active-btn");
+
+            if(centerBtn.classList.contains("active-btn")==true)
+                centerBtn.classList.remove("active-btn");
+        
+            if(rightBtn.classList.contains("active-btn")==true)
+                rightBtn.classList.remove("active-btn");
+
+        }else if(cellObject.halign=="center"){
+            centerBtn.classList.add("active-btn");
+
+            if(leftBtn.classList.contains("active-btn")==true)
+                leftBtn.classList.remove("active-btn");
+            
+            if(rightBtn.classList.contains("active-btn")==true)
+                rightBtn.classList.remove("active-btn");
+
+        }else if(cellObject.halign=="right"){
+            rightBtn.classList.add("active-btn");
+
+            if(leftBtn.classList.contains("active-btn")==true)
+                leftBtn.classList.remove("active-btn");
+            
+            if(centerBtn.classList.contains("active-btn")==true)
+                centerBtn.classList.remove("active-btn");
+        }
+
+      }
 
 
     })
@@ -109,21 +182,83 @@ leftBtn.addEventListener("click",function(){
     let address=addressBox.value;
     let { rid, cid }=getRidCidFromAddress(address);
     let cell=document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
-    cell.style.textAlign="left";
+    let isActive=leftBtn.classList.contains("active-btn");
+    cellObject=sheetDB[rid][cid];
+
+    if(isActive==false){
+        if(centerBtn.classList.contains("active-btn")==true)
+            centerBtn.classList.remove("active-btn");
+        
+        if(rightBtn.classList.contains("active-btn")==true)
+            rightBtn.classList.remove("active-btn");
+        
+        cell.style.textAlign="left";
+        leftBtn.classList.add("active-btn");
+        cellObject.halign="left";
+
+    }else{
+        leftBtn.classList.remove("active-btn");
+        cellObject.align="left";
+        if(centerBtn.classList.contains("active-btn")==true)
+        centerBtn.classList.remove("active-btn");
+
+        if(rightBtn.classList.contains("active-btn")==true)
+            rightBtn.classList.remove("active-btn");
+    }
+
+
 })
 
 centerBtn.addEventListener("click",function(){
     let address=addressBox.value;
     let { rid, cid }=getRidCidFromAddress(address);
     let cell=document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
-    cell.style.textAlign="center";
+    let isActive=centerBtn.classList.contains("active-btn");
+    cellObject=sheetDB[rid][cid];
+
+    if(isActive==false){
+        if(leftBtn.classList.contains("active-btn")==true)
+            leftBtn.classList.remove("active-btn");
+        
+        if(rightBtn.classList.contains("active-btn")==true)
+            rightBtn.classList.remove("active-btn");
+        
+        cell.style.textAlign="center";
+        centerBtn.classList.add("active-btn");
+        cellObject.halign="center";
+
+    }else{
+        cell.style.textAlign="left";
+        centerBtn.classList.remove("active-btn");
+        cellObject.halign="left";
+    }
 })
 
 rightBtn.addEventListener("click",function(){
     let address=addressBox.value;
     let { rid, cid }=getRidCidFromAddress(address);
     let cell=document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
-    cell.style.textAlign="right";
+
+    cellObject=sheetDB[rid][cid];
+    let isActive=rightBtn.classList.contains("active-btn");
+    if(isActive==false){
+        if(leftBtn.classList.contains("active-btn")==true)
+            leftBtn.classList.remove("active-btn");
+        
+        if(centerBtn.classList.contains("active-btn")==true)
+            centerBtn.classList.remove("active-btn");
+        
+        cell.style.textAlign="right";
+        rightBtn.classList.add("active-btn");
+        cellObject.halign="right";
+
+    }else{
+        cell.style.textAlign="right";
+        rightBtn.classList.remove("active-btn");
+        cellObject.halign="left";
+    }
+
+
 })
 
 //working for font btn
@@ -197,13 +332,15 @@ underlineElem.addEventListener("click",function(){
     let address=addressBox.value;
     let { rid, cid }=getRidCidFromAddress(address);
     let cell=document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
-
+    cellObject=sheetDB[rid][cid];
     if(isActive==false){
         cell.style.textDecoration="underline";
         underlineElem.classList.add("active-btn");
+        cellObject.underline=true;
     }else{
         cell.style.textDecoration="none";
         underlineElem.classList.remove("active-btn");
+        cellObject.underline=false;
     }
     
 })
@@ -223,6 +360,41 @@ function getRidCidFromAddress(address){
 }
 
 
+function initUI(){
+    for(let i=0;i<AllCells.length;i++){
+        AllCells[i].style.fontWeight="normal";
+        AllCells[i].style.textAlign="left";
+        AllCells[i].style.fontStyle="normal";
+        AllCells[i].style.textDecoration="none";
+        AllCells[i].style.fontSize="10px";
+        AllCells[i].innerText="";
+    }
+}
+
+for(let i=0;i<AllCells.length;i++){
+    AllCells[i].addEventListener("blur",function handleCells(){
+        let address=addressBox.value;
+        let { rid, cid }=getRidCidFromAddress(address);
+        let cellObject=sheetDB[rid][cid];
+        let cell=document.querySelector(`.col[rid="${rid}"][cid="${cid}"]`);
+        cellObject.value=cell.innerText;
+    });
+}
+
+
+function setUI(sheetDB){
+    for(let i=0;i<sheetDB.length;i++){
+        console.log("sheet db:",sheetDB[i].length);
+        for(let j=0;j<sheetDB[i].length;j++){
+
+            let cell=document.querySelector(`.col[rid="${i}"][cid="${j}"]`);
+            let { bold,italic,underline,fontFamily,fontSize,halign,value } = sheetDB[i][j];
+            cell.style.fontWeight= bold == true ? "bold" : "normal";
+            console.log(value);
+            cell.innerText=value;
+        }
+    }
+}
 
 
 

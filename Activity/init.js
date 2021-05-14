@@ -42,23 +42,32 @@
 
     //creating 2d array
 
-    let sheetDB=[];
-
-    for(let i=0;i<100;i++){
-        let row=[]
-        for(let j=0;j<26;j++){
-            let cell={
-                bold:false,
-                italic:false,
-                underline:"none",
-                fontFamily:"Arial",
-                fontSize:"10",
-                halign:"left"
-            }
-
-            row.push(cell);
-        }
-        sheetDB.push(row);
-    }
 
     //console.log(sheetDB);
+    let workSheetDB=[];
+    function initCurrentSheetDb(){
+        let sheetDB=[];
+    
+        for(let i=0;i<100;i++){
+            let row=[]
+            for(let j=0;j<26;j++){
+                let cell={
+                    bold:false,
+                    italic:false,
+                    underline:false,
+                    fontFamily:"Arial",
+                    fontSize:"10",
+                    halign:"default",
+                    value:""
+                }
+    
+                row.push(cell);
+            }
+            sheetDB.push(row);
+        }
+    
+        workSheetDB.push(sheetDB);
+        console.log(workSheetDB);
+    }
+
+initCurrentSheetDb();
